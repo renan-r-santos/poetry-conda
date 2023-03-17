@@ -13,15 +13,15 @@ from poetry.utils import env
 
 class EnvManager(env.EnvManager):
     def get(self, reload: bool = False) -> env.Env:
-        ignore_conda_envs = self._poetry.config.get("virtualenvs.ignore-conda-envs")
+        ignore_conda_env = self._poetry.config.get("virtualenvs.ignore-conda-env")
         conda_default_env = os.environ.get("CONDA_DEFAULT_ENV")
 
-        if ignore_conda_envs is True and conda_default_env is not None:
+        if ignore_conda_env is True and conda_default_env is not None:
             os.environ["CONDA_DEFAULT_ENV"] = "base"
 
         env = super().get(reload)
 
-        if ignore_conda_envs is True and conda_default_env is not None:
+        if ignore_conda_env is True and conda_default_env is not None:
             os.environ["CONDA_DEFAULT_ENV"] = conda_default_env
 
         return env
@@ -29,12 +29,12 @@ class EnvManager(env.EnvManager):
 
 class Config(config.Config):
     def __init__(self, use_environment: bool = True, base_dir: Optional[Path] = None) -> None:
-        Config.default_config["virtualenvs"]["ignore-conda-envs"] = True
+        Config.default_config["virtualenvs"]["ignore-conda-env"] = True
         super().__init__(use_environment, base_dir)
 
     @staticmethod
     def _get_normalizer(name: str) -> Callable[[str], Any]:
-        if name == "virtualenvs.ignore-conda-envs":
+        if name == "virtualenvs.ignore-conda-env":
             return boolean_normalizer
         return config.Config._get_normalizer(name)
 
@@ -46,9 +46,9 @@ class ConfigCommand(config_command.ConfigCommand):
 
         major, minor, _ = [int(v) for v in __version__.split(".")]
         if major == 1 and minor < 4:
-            unique_config_values["virtualenvs.ignore-conda-envs"] = (boolean_validator, boolean_normalizer, True)  # type: ignore
+            unique_config_values["virtualenvs.ignore-conda-env"] = (boolean_validator, boolean_normalizer, True)  # type: ignore
         else:
-            unique_config_values["virtualenvs.ignore-conda-envs"] = (boolean_validator, boolean_normalizer)
+            unique_config_values["virtualenvs.ignore-conda-env"] = (boolean_validator, boolean_normalizer)
         return unique_config_values
 
 

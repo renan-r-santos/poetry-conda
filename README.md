@@ -17,7 +17,7 @@ pip install poetry-conda
 
 ## Usage
 
-This plugin adds the Poetry setting `virtualenvs.ignore-conda-envs` with a default value of `true`. When set to `true`,
+This plugin adds the Poetry setting `virtualenvs.ignore-conda-env` with a default value of `true`. When set to `true`,
 Poetry will ignore Conda environments when creating virtual environments for your projects.
 
 You can change this setting locally or globally the same way you would change any other Poetry setting, including through:
