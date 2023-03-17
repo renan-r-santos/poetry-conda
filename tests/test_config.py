@@ -21,32 +21,32 @@ class TestConfig:
         )
 
     def test_setting_not_available_if_plugin_not_installed(self, remove_poetry_conda_plugin: None) -> None:
-        result = self._run_command("poetry config virtualenvs.ignore-conda-envs", check=False)
-        assert result.stderr.strip().splitlines()[0] == "There is no virtualenvs.ignore-conda-envs setting."
+        result = self._run_command("poetry config virtualenvs.ignore-conda-env", check=False)
+        assert result.stderr.strip().splitlines()[0] == "There is no virtualenvs.ignore-conda-env setting."
 
     def test_default_value(self) -> None:
-        result = self._run_command("poetry config virtualenvs.ignore-conda-envs")
+        result = self._run_command("poetry config virtualenvs.ignore-conda-env")
         assert result.stdout.strip() == "true"
 
     def test_change_setting_using_environment_variable(self) -> None:
-        result = self._run_command("poetry config virtualenvs.ignore-conda-envs")
+        result = self._run_command("poetry config virtualenvs.ignore-conda-env")
         assert result.stdout.strip() == "true"
 
         result = self._run_command(
-            "POETRY_VIRTUALENVS_IGNORE_CONDA_ENVS=false poetry config virtualenvs.ignore-conda-envs"
+            "POETRY_VIRTUALENVS_IGNORE_CONDA_ENV=false poetry config virtualenvs.ignore-conda-env"
         )
         assert result.stdout.strip() == "false"
 
     def test_change_setting_using_the_config_command(self) -> None:
-        result = self._run_command("poetry config virtualenvs.ignore-conda-envs")
+        result = self._run_command("poetry config virtualenvs.ignore-conda-env")
         assert result.stdout.strip() == "true"
 
-        self._run_command("poetry config virtualenvs.ignore-conda-envs false")
-        result = self._run_command("poetry config virtualenvs.ignore-conda-envs")
+        self._run_command("poetry config virtualenvs.ignore-conda-env false")
+        result = self._run_command("poetry config virtualenvs.ignore-conda-env")
         assert result.stdout.strip() == "false"
 
-        self._run_command("poetry config virtualenvs.ignore-conda-envs --unset")
-        result = self._run_command("poetry config virtualenvs.ignore-conda-envs")
+        self._run_command("poetry config virtualenvs.ignore-conda-env --unset")
+        result = self._run_command("poetry config virtualenvs.ignore-conda-env")
         assert result.stdout.strip() == "true"
 
     def test_change_setting_using_the_config_file(self, test_project_dir: Path) -> None:
@@ -55,12 +55,12 @@ class TestConfig:
 
         os.chdir(test_project_dir)
 
-        result = self._run_command("poetry config virtualenvs.ignore-conda-envs")
+        result = self._run_command("poetry config virtualenvs.ignore-conda-env")
         assert result.stdout.strip() == "true"
 
-        result = self._run_command("poetry config virtualenvs.ignore-conda-envs false --local")
-        assert poetry_config_file.read_text().strip() == "[virtualenvs]\nignore-conda-envs = false"
+        result = self._run_command("poetry config virtualenvs.ignore-conda-env false --local")
+        assert poetry_config_file.read_text().strip() == "[virtualenvs]\nignore-conda-env = false"
 
         poetry_config_file.unlink(missing_ok=False)
-        result = self._run_command("poetry config virtualenvs.ignore-conda-envs")
+        result = self._run_command("poetry config virtualenvs.ignore-conda-env")
         assert result.stdout.strip() == "true"

@@ -22,7 +22,7 @@ class TestEnv:
 
     def test_poetry_ignores_conda_env(self, test_project_dir: Path) -> None:
         self._run_command("poetry config virtualenvs.in-project true --local")
-        self._run_command("poetry config virtualenvs.ignore-conda-envs true --local")
+        self._run_command("poetry config virtualenvs.ignore-conda-env true --local")
         self._run_command("poetry show", check=False)
 
         result = self._run_command("poetry run which python")
@@ -34,7 +34,7 @@ class TestEnv:
 
     def test_poetry_uses_conda_env(self, test_project_dir: Path) -> None:
         self._run_command("poetry config virtualenvs.in-project true --local")
-        self._run_command("poetry config virtualenvs.ignore-conda-envs false --local")
+        self._run_command("poetry config virtualenvs.ignore-conda-env false --local")
         self._run_command("poetry show", check=False)
 
         (test_project_dir / "poetry.toml").unlink(missing_ok=False)
