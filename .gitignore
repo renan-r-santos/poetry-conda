@@ -1,0 +1,16 @@
+.idea
+.vscode
+.venv
+.mypy_cache
+.pytest_cache
+dist
+build
+site
+__pycache__
+*.pyc
+*.egg-info
+.ruff_cache
+.coverage
+
+# Ignore non-customizable location of Miniconda GitHub Action base environment
+3
