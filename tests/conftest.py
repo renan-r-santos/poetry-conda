@@ -14,7 +14,7 @@ from pytest import FixtureRequest
     params=[
         {"python": python, "poetry": poetry}
         for python in ["3.8", "3.9", "3.10", "3.11"]
-        for poetry in ["1.3.0", "1.4.0"]
+        for poetry in ["1.3.0", "1.4.0", "1.5.1"]
     ],
     ids=lambda param: f"python-{param['python']}-poetry-{param['poetry']}",
 )
