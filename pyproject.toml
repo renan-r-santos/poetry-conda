@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "poetry-conda"
-version = "0.1.0"
+version = "0.1.1"
 description = "Poetry plugin that allows for the creation of virtual environments using Poetry, without interfering with the Conda environment in which Poetry is installed"
 authors = ["Renan Santos <renan.engmec@gmail.com>"]
 license = "MIT"
