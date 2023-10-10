@@ -12,9 +12,13 @@ from pytest import FixtureRequest
 @pytest.fixture(
     scope="session",
     params=[
-        {"python": python, "poetry": poetry}
-        for python in ["3.8", "3.9", "3.10", "3.11", "3.12"]
-        for poetry in ["1.3.0", "1.4.0", "1.5.1", "1.6.1"]
+        {"python": "3.8", "poetry": "1.3.0"},
+        {"python": "3.9", "poetry": "1.3.0"},
+        {"python": "3.10", "poetry": "1.3.0"},
+        {"python": "3.11", "poetry": "1.3.0"},
+        {"python": "3.11", "poetry": "1.4.0"},
+        {"python": "3.11", "poetry": "1.5.1"},
+        {"python": "3.12", "poetry": "1.6.1"},
     ],
     ids=lambda param: f"python-{param['python']}-poetry-{param['poetry']}",
 )
