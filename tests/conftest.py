@@ -13,8 +13,8 @@ from pytest import FixtureRequest
     scope="session",
     params=[
         {"python": python, "poetry": poetry}
-        for python in ["3.8", "3.9", "3.10", "3.11"]
-        for poetry in ["1.3.0", "1.4.0", "1.5.1"]
+        for python in ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        for poetry in ["1.3.0", "1.4.0", "1.5.1", "1.6.1"]
     ],
     ids=lambda param: f"python-{param['python']}-poetry-{param['poetry']}",
 )
