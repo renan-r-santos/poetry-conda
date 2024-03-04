@@ -33,7 +33,7 @@ jobs:
           miniforge-version: latest
 
       - name: Install poetry
-        run: conda install poetry=1.6.1
+        run: conda install poetry=1.8.2
 
       - name: Configure poetry
         run: poetry config virtualenvs.in-project true

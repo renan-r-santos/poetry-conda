@@ -19,6 +19,8 @@ from pytest import FixtureRequest
         {"python": "3.11", "poetry": "1.4.0"},
         {"python": "3.11", "poetry": "1.5.1"},
         {"python": "3.12", "poetry": "1.6.1"},
+        {"python": "3.12", "poetry": "1.7.1"},
+        {"python": "3.12", "poetry": "1.8.2"},
     ],
     ids=lambda param: f"python-{param['python']}-poetry-{param['poetry']}",
 )
