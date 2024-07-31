@@ -9,6 +9,12 @@ import pytest
 from pytest import FixtureRequest
 
 
+@pytest.fixture(scope="session", autouse=True)
+def use_poetry_env_var_config():
+    # Triggers https://github.com/renan-r-santos/poetry-conda/issues/7
+    os.environ["POETRY_VIRTUALENVS_PROMPT"] = "{project_name}-py{python_version}"
+
+
 @pytest.fixture(
     scope="session",
     params=[
@@ -20,7 +26,7 @@ from pytest import FixtureRequest
         {"python": "3.11", "poetry": "1.5.1"},
         {"python": "3.12", "poetry": "1.6.1"},
         {"python": "3.12", "poetry": "1.7.1"},
-        {"python": "3.12", "poetry": "1.8.2"},
+        {"python": "3.12", "poetry": "1.8.3"},
     ],
     ids=lambda param: f"python-{param['python']}-poetry-{param['poetry']}",
 )

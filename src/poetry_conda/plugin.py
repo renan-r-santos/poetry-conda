@@ -32,11 +32,11 @@ class Config(config.Config):
         Config.default_config["virtualenvs"]["ignore-conda-env"] = True
         super().__init__(use_environment, base_dir)
 
-    @staticmethod
-    def _get_normalizer(name: str) -> Callable[[str], Any]:
+    @classmethod
+    def _get_normalizer(cls, name: str) -> Callable[[str], Any]:
         if name == "virtualenvs.ignore-conda-env":
             return boolean_normalizer
-        return config.Config._get_normalizer(name)
+        return super()._get_normalizer(name)
 
 
 class ConfigCommand(config_command.ConfigCommand):
