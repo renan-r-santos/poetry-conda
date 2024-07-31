@@ -3,23 +3,24 @@ name: Release
 on:
   push:
     tags:
-      - '*.*.*'
+      - "*.*.*"
 
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    environment: release
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v4
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: 3.12
 
       - name: Install Poetry
-        run: curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.4.0 python -
+        run: curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.8.3 python -
 
       - name: Update PATH
         run: echo "$HOME/.local/bin" >> $GITHUB_PATH
@@ -27,7 +28,5 @@ jobs:
       - name: Build project for distribution
         run: poetry build
 
-      - name: Publish to PyPI
-        env:
-          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
-        run: poetry publish
+      - name: Upload distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

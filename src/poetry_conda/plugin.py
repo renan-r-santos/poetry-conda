@@ -32,11 +32,11 @@ class Config(config.Config):
         Config.default_config["virtualenvs"]["ignore-conda-env"] = True
         super().__init__(use_environment, base_dir)
 
-    @staticmethod
-    def _get_normalizer(name: str) -> Callable[[str], Any]:
+    @classmethod
+    def _get_normalizer(cls, name: str) -> Callable[[str], Any]:
         if name == "virtualenvs.ignore-conda-env":
             return boolean_normalizer
-        return config.Config._get_normalizer(name)
+        return super()._get_normalizer(name)
 
 
 class ConfigCommand(config_command.ConfigCommand):
@@ -54,6 +54,6 @@ class ConfigCommand(config_command.ConfigCommand):
 
 class PoetryCondaPlugin(ApplicationPlugin):
     def activate(self, application: Application) -> None:
-        setattr(config, "Config", Config)
-        setattr(config_command, "ConfigCommand", ConfigCommand)
-        setattr(env, "EnvManager", EnvManager)
+        config.Config = Config  # type: ignore
+        config_command.ConfigCommand = ConfigCommand  # type: ignore
+        env.EnvManager = EnvManager  # type: ignore

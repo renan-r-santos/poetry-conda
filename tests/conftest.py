@@ -6,7 +6,12 @@ from string import ascii_letters, digits
 from typing import Iterator
 
 import pytest
-from pytest import FixtureRequest
+
+
+@pytest.fixture(scope="session", autouse=True)
+def _use_poetry_env_var_config() -> None:
+    # Triggers https://github.com/renan-r-santos/poetry-conda/issues/7
+    os.environ["POETRY_VIRTUALENVS_PROMPT"] = "{project_name}-py{python_version}"
 
 
 @pytest.fixture(
@@ -15,16 +20,12 @@ from pytest import FixtureRequest
         {"python": "3.8", "poetry": "1.3.0"},
         {"python": "3.9", "poetry": "1.3.0"},
         {"python": "3.10", "poetry": "1.3.0"},
-        {"python": "3.11", "poetry": "1.3.0"},
-        {"python": "3.11", "poetry": "1.4.0"},
         {"python": "3.11", "poetry": "1.5.1"},
-        {"python": "3.12", "poetry": "1.6.1"},
-        {"python": "3.12", "poetry": "1.7.1"},
-        {"python": "3.12", "poetry": "1.8.2"},
+        {"python": "3.12", "poetry": "1.8.3"},
     ],
     ids=lambda param: f"python-{param['python']}-poetry-{param['poetry']}",
 )
-def conda_environment(request: FixtureRequest) -> Iterator[str]:
+def conda_environment(request: pytest.FixtureRequest) -> Iterator[str]:
     python_version = request.param.get("python")
     poetry_version = request.param.get("poetry")
     random_string = "".join(random.choices(ascii_letters + digits, k=8))
@@ -54,8 +55,8 @@ def conda_environment(request: FixtureRequest) -> Iterator[str]:
     subprocess.run(["conda", "remove", "--prefix", environment_path, "--all", "--quiet", "--yes"], check=True)
 
 
-@pytest.fixture
-def remove_poetry_conda_plugin(conda_environment: str) -> Iterator[None]:
+@pytest.fixture()
+def _remove_poetry_conda_plugin(conda_environment: str) -> Iterator[None]:
     subprocess.run(
         ["conda", "run", "--prefix", conda_environment, "pip", "uninstall", "poetry-conda", "--yes"], check=True
     )
@@ -66,7 +67,7 @@ def remove_poetry_conda_plugin(conda_environment: str) -> Iterator[None]:
     subprocess.run(["conda", "run", "--prefix", conda_environment, "pip", "install", "--no-deps", root_dir], check=True)
 
 
-@pytest.fixture
+@pytest.fixture()
 def test_project_dir() -> Iterator[Path]:
     test_project_dir = Path(__file__).parent / "test_project"
     current_cwd = Path.cwd()

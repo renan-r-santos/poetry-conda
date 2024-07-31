@@ -21,10 +21,10 @@ jobs:
       run:
         shell: bash -el {0}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Miniforge on ${{ matrix.os }}
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v3
         with:
           activate-environment: ""
           auto-activate-base: true
@@ -33,7 +33,7 @@ jobs:
           miniforge-version: latest
 
       - name: Install poetry
-        run: conda install poetry=1.8.2
+        run: conda install poetry=1.8.3
 
       - name: Configure poetry
         run: poetry config virtualenvs.in-project true
@@ -41,14 +41,8 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction --no-ansi
 
-      - name: Run mypy
-        run: poetry run mypy
-
-      - name: Run black
-        run: poetry run black --check .
-
       - name: Run ruff
-        run: poetry run ruff check .
+        run: poetry run nox -s lint mypy
 
       - name: Run pytest
         run: poetry run pytest
