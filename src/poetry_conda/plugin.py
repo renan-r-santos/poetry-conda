@@ -54,6 +54,6 @@ class ConfigCommand(config_command.ConfigCommand):
 
 class PoetryCondaPlugin(ApplicationPlugin):
     def activate(self, application: Application) -> None:
-        setattr(config, "Config", Config)
-        setattr(config_command, "ConfigCommand", ConfigCommand)
-        setattr(env, "EnvManager", EnvManager)
+        config.Config = Config  # type: ignore
+        config_command.ConfigCommand = ConfigCommand  # type: ignore
+        env.EnvManager = EnvManager  # type: ignore

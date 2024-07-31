@@ -9,7 +9,7 @@ import pytest
 @pytest.mark.usefixtures("conda_environment")
 class TestEnv:
     @pytest.fixture(autouse=True)
-    def env(self, conda_environment: str) -> None:
+    def _env(self, conda_environment: str) -> None:
         self._conda_environment = conda_environment
 
     def _run_command(self, command: str, check: bool = True) -> CompletedProcess[str]:

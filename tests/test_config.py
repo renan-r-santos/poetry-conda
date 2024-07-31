@@ -9,7 +9,7 @@ import pytest
 @pytest.mark.usefixtures("conda_environment")
 class TestConfig:
     @pytest.fixture(autouse=True)
-    def env(self, conda_environment: str) -> None:
+    def _env(self, conda_environment: str) -> None:
         self._conda_environment = conda_environment
 
     def _run_command(self, command: str, check: bool = True) -> CompletedProcess[str]:
@@ -20,7 +20,8 @@ class TestConfig:
             text=True,
         )
 
-    def test_setting_not_available_if_plugin_not_installed(self, remove_poetry_conda_plugin: None) -> None:
+    @pytest.mark.usefixtures("_remove_poetry_conda_plugin")
+    def test_setting_not_available_if_plugin_not_installed(self) -> None:
         result = self._run_command("poetry config virtualenvs.ignore-conda-env", check=False)
         assert result.stderr.strip().splitlines()[0] == "There is no virtualenvs.ignore-conda-env setting."
 
