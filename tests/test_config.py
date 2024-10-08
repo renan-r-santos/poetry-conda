@@ -6,15 +6,15 @@ from subprocess import CompletedProcess
 import pytest
 
 
-@pytest.mark.usefixtures("conda_environment")
+@pytest.mark.usefixtures("pixi_environment")
 class TestConfig:
     @pytest.fixture(autouse=True)
-    def _env(self, conda_environment: str) -> None:
-        self._conda_environment = conda_environment
+    def _env(self, pixi_environment: str) -> None:
+        self._pixi_environment = pixi_environment
 
     def _run_command(self, command: str, check: bool = True) -> CompletedProcess[str]:
         return subprocess.run(
-            ["conda", "run", "--prefix", self._conda_environment, *command.split()],
+            ["pixi", "run", "--manifest-path", f"{self._pixi_environment}/pixi.toml", *command.split()],
             capture_output=True,
             check=check,
             text=True,

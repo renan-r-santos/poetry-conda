@@ -25,22 +25,21 @@ def _use_poetry_env_var_config() -> None:
     ],
     ids=lambda param: f"python-{param['python']}-poetry-{param['poetry']}",
 )
-def conda_environment(request: pytest.FixtureRequest) -> Iterator[str]:
+def pixi_environment(request: pytest.FixtureRequest) -> Iterator[str]:
     python_version = request.param.get("python")
     poetry_version = request.param.get("poetry")
-    random_string = "".join(random.choices(ascii_letters + digits, k=8))
-    environment_path = f"/tmp/{random_string}-test-poetry-conda-python-{python_version}-poetry-{poetry_version}"
 
+    random_string = "".join(random.choices(ascii_letters + digits, k=8))
+    tmp_path = f"/tmp/{random_string}-test-poetry-conda-python-{python_version}-poetry-{poetry_version}"
+    Path(tmp_path).mkdir(parents=True, exist_ok=True)
+
+    subprocess.run(["pixi", "init", tmp_path], check=True)
     subprocess.run(
         [
-            "conda",
-            "create",
-            "--prefix",
-            environment_path,
-            "--channel",
-            "conda-forge",
-            "--quiet",
-            "--yes",
+            "pixi",
+            "add",
+            "--manifest-path",
+            f"{tmp_path}/pixi.toml",
             f"python={python_version}",
             f"poetry={poetry_version}",
         ],
@@ -48,23 +47,28 @@ def conda_environment(request: pytest.FixtureRequest) -> Iterator[str]:
     )
 
     root_dir = Path(__file__).parent.parent
-    subprocess.run(["conda", "run", "--prefix", environment_path, "pip", "install", "--no-deps", root_dir], check=True)
+    subprocess.run(
+        ["pixi", "add", "--manifest-path", f"{tmp_path}/pixi.toml", "--pypi", f"poetry-conda@{root_dir}"], check=True
+    )
 
-    yield environment_path
+    yield tmp_path
 
-    subprocess.run(["conda", "remove", "--prefix", environment_path, "--all", "--quiet", "--yes"], check=True)
+    subprocess.run(["pixi", "remove", "--manifest-path", f"{tmp_path}/pixi.toml", "--pypi", "poetry-conda"], check=True)
 
 
 @pytest.fixture
-def _remove_poetry_conda_plugin(conda_environment: str) -> Iterator[None]:
+def _remove_poetry_conda_plugin(pixi_environment: str) -> Iterator[None]:
     subprocess.run(
-        ["conda", "run", "--prefix", conda_environment, "pip", "uninstall", "poetry-conda", "--yes"], check=True
+        ["pixi", "remove", "--manifest-path", f"{pixi_environment}/pixi.toml", "--pypi", "poetry-conda"], check=True
     )
 
     yield
 
     root_dir = Path(__file__).parent.parent
-    subprocess.run(["conda", "run", "--prefix", conda_environment, "pip", "install", "--no-deps", root_dir], check=True)
+    subprocess.run(
+        ["pixi", "add", "--manifest-path", f"{pixi_environment}/pixi.toml", "--pypi", f"poetry-conda@{root_dir}"],
+        check=True,
+    )
 
 
 @pytest.fixture
