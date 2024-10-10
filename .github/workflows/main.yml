@@ -29,8 +29,13 @@ jobs:
           pixi-version: v0.32.0
           run-install: false
 
-      - name: Install poetry
-        run: pixi global install poetry=1.8.3
+      - name: Install Python
+        run: pixi global install python
+
+      - name: Install Poetry
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: 1.8.3
 
       - name: Configure poetry
         run: poetry config virtualenvs.in-project true
