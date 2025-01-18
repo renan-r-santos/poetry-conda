@@ -26,16 +26,16 @@ jobs:
       - name: Install Pixi
         uses: prefix-dev/setup-pixi@v0.8.1
         with:
-          pixi-version: v0.32.0
+          pixi-version: v0.40.2
           run-install: false
 
       - name: Install Python
         run: pixi global install python
 
       - name: Install Poetry
-        uses: abatilo/actions-poetry@v2
+        uses: abatilo/actions-poetry@v4
         with:
-          poetry-version: 1.8.3
+          poetry-version: 2.0.1
 
       - name: Configure poetry
         run: poetry config virtualenvs.in-project true

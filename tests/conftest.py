@@ -17,11 +17,12 @@ def _use_poetry_env_var_config() -> None:
 @pytest.fixture(
     scope="session",
     params=[
-        {"python": "3.9", "poetry": "1.3.0"},
-        {"python": "3.10", "poetry": "1.3.0"},
+        {"python": "3.9", "poetry": "1.5.0"},
+        {"python": "3.10", "poetry": "1.5.0"},
         {"python": "3.11", "poetry": "1.5.1"},
-        {"python": "3.12", "poetry": "1.8.3"},
-        {"python": "3.13", "poetry": "1.8.3"},
+        {"python": "3.12", "poetry": "1.8.5"},
+        {"python": "3.13", "poetry": "1.8.5"},
+        {"python": "3.13", "poetry": "2.0.1"},
     ],
     ids=lambda param: f"python-{param['python']}-poetry-{param['poetry']}",
 )
@@ -48,7 +49,8 @@ def pixi_environment(request: pytest.FixtureRequest) -> Iterator[str]:
 
     root_dir = Path(__file__).parent.parent
     subprocess.run(
-        ["pixi", "add", "--manifest-path", f"{tmp_path}/pixi.toml", "--pypi", f"poetry-conda@{root_dir}"], check=True
+        ["pixi", "add", "--manifest-path", f"{tmp_path}/pixi.toml", "--pypi", f"poetry-conda@file://{root_dir}"],
+        check=True,
     )
 
     yield tmp_path
@@ -66,7 +68,14 @@ def _remove_poetry_conda_plugin(pixi_environment: str) -> Iterator[None]:
 
     root_dir = Path(__file__).parent.parent
     subprocess.run(
-        ["pixi", "add", "--manifest-path", f"{pixi_environment}/pixi.toml", "--pypi", f"poetry-conda@{root_dir}"],
+        [
+            "pixi",
+            "add",
+            "--manifest-path",
+            f"{pixi_environment}/pixi.toml",
+            "--pypi",
+            f"poetry-conda@file://{root_dir}",
+        ],
         check=True,
     )
 
