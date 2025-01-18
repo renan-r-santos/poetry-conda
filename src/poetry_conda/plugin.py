@@ -30,7 +30,10 @@ class EnvManager(env.EnvManager):
 class Config(config.Config):
     def __init__(self, use_environment: bool = True, base_dir: Optional[Path] = None) -> None:
         Config.default_config["virtualenvs"]["ignore-conda-env"] = True
-        super().__init__(use_environment, base_dir)
+        try:
+            super().__init__(use_environment, base_dir)  # type: ignore[unused-ignore]
+        except TypeError:
+            super().__init__(use_environment)
 
     @classmethod
     def _get_normalizer(cls, name: str) -> Callable[[str], Any]:
