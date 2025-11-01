@@ -17,12 +17,12 @@ def _use_poetry_env_var_config() -> None:
 @pytest.fixture(
     scope="session",
     params=[
-        {"python": "3.9", "poetry": "1.5.0"},
         {"python": "3.10", "poetry": "1.5.0"},
         {"python": "3.11", "poetry": "1.5.1"},
         {"python": "3.12", "poetry": "1.8.5"},
         {"python": "3.13", "poetry": "1.8.5"},
-        {"python": "3.13", "poetry": "2.0.1"},
+        {"python": "3.13", "poetry": "2.2.1"},
+        {"python": "3.14", "poetry": "2.2.1"},
     ],
     ids=lambda param: f"python-{param['python']}-poetry-{param['poetry']}",
 )
