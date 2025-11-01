@@ -12,7 +12,9 @@ class TestConfig:
     def _env(self, pixi_environment: str) -> None:
         self._pixi_environment = pixi_environment
 
-    def _run_command(self, command: str, check: bool = True, env: dict | None = None) -> CompletedProcess[str]:
+    def _run_command(
+        self, command: str, check: bool = True, env: dict[str, str] | None = None
+    ) -> CompletedProcess[str]:
         return subprocess.run(
             ["pixi", "run", "--manifest-path", f"{self._pixi_environment}/pixi.toml", *command.split()],
             capture_output=True,
