@@ -14,15 +14,15 @@ jobs:
       id-token: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v5
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v6
         with:
-          python-version: 3.13
+          python-version: 3.14
 
       - name: Install Poetry
-        run: curl -sSL https://install.python-poetry.org | POETRY_VERSION=2.0.1 python -
+        run: curl -sSL https://install.python-poetry.org | POETRY_VERSION=2.2.1 python -
 
       - name: Update PATH
         run: echo "$HOME/.local/bin" >> $GITHUB_PATH

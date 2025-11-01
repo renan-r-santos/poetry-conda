@@ -12,11 +12,14 @@ class TestConfig:
     def _env(self, pixi_environment: str) -> None:
         self._pixi_environment = pixi_environment
 
-    def _run_command(self, command: str, check: bool = True) -> CompletedProcess[str]:
+    def _run_command(
+        self, command: str, check: bool = True, env: dict[str, str] | None = None
+    ) -> CompletedProcess[str]:
         return subprocess.run(
             ["pixi", "run", "--manifest-path", f"{self._pixi_environment}/pixi.toml", *command.split()],
             capture_output=True,
             check=check,
+            env=os.environ.copy() if env is None else {**os.environ, **env},
             text=True,
         )
 
@@ -34,7 +37,7 @@ class TestConfig:
         assert result.stdout.strip() == "true"
 
         result = self._run_command(
-            "POETRY_VIRTUALENVS_IGNORE_CONDA_ENV=false poetry config virtualenvs.ignore-conda-env"
+            "poetry config virtualenvs.ignore-conda-env", env={"POETRY_VIRTUALENVS_IGNORE_CONDA_ENV": "false"}
         )
         assert result.stdout.strip() == "false"
 

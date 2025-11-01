@@ -3,7 +3,7 @@
 This plugin allows the installation of Poetry into Conda environments other than `base` and enables it to create
 virtual environments for your projects without polluting the Conda environment where it is installed.
 
-It works with any combination of Python 3.9+ and Poetry 1.5+.
+It works with any combination of Python 3.10+ and Poetry 1.5+.
 
 ## Installation
 

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "poetry-conda"
-version = "0.1.4"
+version = "0.1.5"
 description = "Poetry plugin that allows for the creation of virtual environments using Poetry, without interfering with the Conda environment in which Poetry is installed"
 authors = ["Renan Santos <renan.engmec@gmail.com>"]
 license = "MIT"
@@ -15,25 +15,25 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Typing :: Typed",
 ]
 
 packages = [{ include = "poetry_conda", from = "src" }]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<4"
+python = ">=3.10,<4"
 poetry = ">=1.5.0,<3"
 
 [tool.poetry.group.dev.dependencies]
-mypy = ">=1,<2"
-pytest = ">=8,<9"
-ruff = ">=0.9,<0.10"
-nox_poetry = ">=1,<2"
+mypy = ">=1"
+pytest = ">=8"
+ruff = ">=0.9"
+nox_poetry = ">=1"
 
 [tool.poetry.plugins."poetry.application.plugin"]
 poetry-conda = "poetry_conda.plugin:PoetryCondaPlugin"
@@ -50,7 +50,7 @@ strict = true
 [tool.ruff]
 src = ["src"]
 line-length = 120
-target-version = "py39"
+target-version = "py310"
 
 [tool.ruff.lint]
 extend-select = [
