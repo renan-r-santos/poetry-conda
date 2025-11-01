@@ -1,0 +1,3 @@
+[virtualenvs]
+in-project = true
+ignore-conda-env = true
